@@ -1,0 +1,28 @@
+{
+  "name": "orders",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest" 
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.9.0",
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.13",
+    "biome": "^0.3.3",
+    "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "vite-tsconfig-paths": "^6.0.5",
+    "vitest": "^4.0.18"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "fastify": "^5.7.2",
+    "tsup": "^8.5.1",
+    "uuidv7": "^1.1.0"
+  }
+}
