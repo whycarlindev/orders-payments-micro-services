@@ -31,6 +31,7 @@ describe('Create Order Use Case', () => {
 function setup() {
   messageBroker = {
     publish: vi.fn(),
+    subscribe: vi.fn(),
   }
 
   inMemoryOrdersRepository = new InMemoryOrdersRepository()
