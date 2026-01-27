@@ -1,4 +1,4 @@
-import { Order, OrderStatus } from '@/application/models/order'
+import { Order, OrderStatus } from '@/application/dtos/order'
 
 export type FindManyParams = {
   page?: number

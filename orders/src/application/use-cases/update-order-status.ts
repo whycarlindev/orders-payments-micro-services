@@ -1,5 +1,5 @@
+import { Order, OrderStatus } from '../dtos/order'
 import { OrdersRepository } from '../interfaces/orders-repository'
-import { Order, OrderStatus } from '../models/order'
 import { Either, left, right } from '../utils/either'
 import { InvalidStatusTransitionError } from './errors/invalid-status-transition'
 import { OrderNotFoundError } from './errors/order-not-found'

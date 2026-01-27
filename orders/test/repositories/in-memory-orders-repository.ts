@@ -1,8 +1,8 @@
+import { Order, OrderStatus } from '@/application/dtos/order'
 import {
   FindManyParams,
   OrdersRepository,
 } from '@/application/interfaces/orders-repository'
-import { Order, OrderStatus } from '@/application/models/order'
 
 export class InMemoryOrdersRepository implements OrdersRepository {
   public items: Order[] = []

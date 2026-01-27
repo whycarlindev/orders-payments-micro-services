@@ -1,5 +1,5 @@
 import { InMemoryOrdersRepository } from 'test/repositories/in-memory-orders-repository'
-import { OrderStatus } from '../models/order'
+import { OrderStatus } from '../dtos/order'
 import { OrderNotFoundError } from './errors/order-not-found'
 import { GetOrderByIdUseCase } from './get-order-by-id'
 

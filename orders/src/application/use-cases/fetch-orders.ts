@@ -1,8 +1,8 @@
+import { Order, OrderStatus } from '../dtos/order'
 import {
   FindManyResult,
   OrdersRepository,
 } from '../interfaces/orders-repository'
-import { Order, OrderStatus } from '../models/order'
 import { Either, right } from '../utils/either'
 
 type FetchOrdersUseCaseInput = {

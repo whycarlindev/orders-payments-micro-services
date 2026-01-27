@@ -1,6 +1,6 @@
 import { InMemoryOrdersRepository } from 'test/repositories/in-memory-orders-repository'
+import { Order, OrderStatus } from '../dtos/order'
 import { FindManyResult } from '../interfaces/orders-repository'
-import { Order, OrderStatus } from '../models/order'
 import { FetchOrdersUseCase } from './fetch-orders'
 
 let inMemoryOrdersRepository: InMemoryOrdersRepository

@@ -1,5 +1,5 @@
+import { Order } from '../dtos/order'
 import { OrdersRepository } from '../interfaces/orders-repository'
-import { Order } from '../models/order'
 import { Either, left, right } from '../utils/either'
 import { OrderNotFoundError } from './errors/order-not-found'
 

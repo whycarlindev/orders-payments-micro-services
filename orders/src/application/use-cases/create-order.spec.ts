@@ -1,6 +1,6 @@
 import { InMemoryOrdersRepository } from 'test/repositories/in-memory-orders-repository'
+import { Order, PaymentMethod } from '../dtos/order'
 import { MessageBroker } from '../interfaces/message-broker'
-import { Order, PaymentMethod } from '../models/order'
 import { CreateOrderUseCase } from './create-order'
 
 let messageBroker: MessageBroker

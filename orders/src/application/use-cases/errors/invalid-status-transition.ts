@@ -1,4 +1,4 @@
-import { OrderStatus } from '../../models/order'
+import { OrderStatus } from '../../dtos/order'
 
 export class InvalidStatusTransitionError extends Error {
   constructor(from: OrderStatus, to: OrderStatus) {

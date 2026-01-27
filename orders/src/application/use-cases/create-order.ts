@@ -1,5 +1,5 @@
+import { Order, OrderStatus, PaymentMethod } from '@/application/dtos/order'
 import { OrdersRepository } from '@/application/interfaces/orders-repository'
-import { Order, OrderStatus, PaymentMethod } from '@/application/models/order'
 import { uuidv7 } from 'uuidv7'
 import { MessageBroker } from '../interfaces/message-broker'
 import { Either, right } from '../utils/either'
