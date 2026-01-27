@@ -1,6 +1,7 @@
 import { PaymentMethod } from '@/application/dtos/order'
 import { CreateOrderUseCase } from '@/application/use-cases/create-order'
 import { KnexOrdersRepository } from '@/infra/database/repositories/knex-orders-repository'
+import { messageBroker } from '@/infra/message-broker'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 
@@ -14,12 +15,6 @@ export class CreateOrderController {
     const { cost, paymentMethod } = createOrderBodySchema.parse(request.body)
 
     const ordersRepository = new KnexOrdersRepository()
-
-    const messageBroker = {
-      publish: async () => {
-        console.log('MessageBroker not implemented yet')
-      },
-    }
 
     const createOrderUseCase = new CreateOrderUseCase(
       messageBroker,
