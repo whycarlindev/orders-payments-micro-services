@@ -60,12 +60,12 @@ describe('Resolve Payment Use Case', () => {
 
     const result = await sut.execute({
       paymentId: payment.id,
-      status: 'failure',
+      status: 'failed',
     })
 
     expect(result.isRight()).toBe(true)
     expect(messageBroker.publish).toHaveBeenCalledWith('payment.update', {
-      status: 'failure',
+      status: 'failed',
       orderId: payment.orderId,
     })
 
@@ -91,6 +91,6 @@ describe('Resolve Payment Use Case', () => {
 
 function setup() {
   inMemoryPaymentsRepository = new InMemoryPaymentsRepository()
-  messageBroker = { publish: vi.fn() }
+  messageBroker = { publish: vi.fn(), subscribe: vi.fn() }
   sut = new ResolvePaymentUseCase(messageBroker, inMemoryPaymentsRepository)
 }

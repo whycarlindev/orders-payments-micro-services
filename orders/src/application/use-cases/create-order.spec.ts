@@ -24,7 +24,7 @@ describe('Create Order Use Case', () => {
 
     expect(typedResult.order).toHaveProperty('id')
     expect(typedResult.order.status).toBe('created')
-    expect(typedResult.order).toHaveProperty('created_at')
+    expect(typedResult.order).toHaveProperty('createdAt')
   })
 })
 
