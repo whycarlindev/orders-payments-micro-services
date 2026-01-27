@@ -25,4 +25,12 @@ export class InMemoryPaymentsRepository implements PaymentsRepository {
     const payment = this.items.find((payment) => payment.orderId === orderId)
     return payment || null
   }
+
+  async updateStatus(id: string, status: Payment['status']) {
+    const paymentIndex = this.items.findIndex((payment) => payment.id === id)
+
+    if (paymentIndex >= 0) {
+      this.items[paymentIndex].status = status
+    }
+  }
 }

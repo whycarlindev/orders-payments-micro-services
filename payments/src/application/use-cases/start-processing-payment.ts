@@ -1,7 +1,7 @@
 import { uuidv7 } from 'uuidv7'
 import { MessageBroker } from '../interfaces/message-broker'
 import { PaymentsRepository } from '../interfaces/payments-repository'
-import { Payment, PaymentMethod } from '../models/payment'
+import { Payment, PaymentMethod, PaymentStatus } from '../models/payment'
 import { Either, right } from '../utils/either'
 
 type StartProcessingPaymentUseCaseInput = {
@@ -45,6 +45,7 @@ export class StartProcessingPaymentUseCase {
       cost,
       idempotencyKey,
       method,
+      status: PaymentStatus.PENDING,
     }
 
     await this.paymentsRepository.create(payment)

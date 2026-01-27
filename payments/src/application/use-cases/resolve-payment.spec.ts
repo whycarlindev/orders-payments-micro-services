@@ -1,6 +1,6 @@
 import { InMemoryPaymentsRepository } from 'test/in-memory-payments-repository'
 import { MessageBroker } from '../interfaces/message-broker'
-import { PaymentMethod } from '../models/payment'
+import { PaymentMethod, PaymentStatus } from '../models/payment'
 import { PaymentNotFoundError } from './errors/payment-not-found'
 import { ResolvePaymentUseCase } from './resolve-payment'
 
@@ -20,6 +20,7 @@ describe('Resolve Payment Use Case', () => {
       cost: 100,
       idempotencyKey: 'idempotency-key-123',
       method: PaymentMethod.CREDIT_CARD,
+      status: PaymentStatus.PENDING,
     }
 
     await inMemoryPaymentsRepository.create(payment)
@@ -33,6 +34,13 @@ describe('Resolve Payment Use Case', () => {
     expect(messageBroker.publish).toHaveBeenCalledWith('payment.success', {
       orderId: payment.orderId,
     })
+
+    const paymentInRepository = await inMemoryPaymentsRepository.findById(
+      payment.id,
+    )
+
+    expect(paymentInRepository).toBeDefined()
+    expect(paymentInRepository.status).toBe(PaymentStatus.SUCCESS)
   })
 
   it('should be able to resolve a payment with failure status', async () => {
@@ -42,6 +50,7 @@ describe('Resolve Payment Use Case', () => {
       cost: 100,
       idempotencyKey: 'idempotency-key-123',
       method: PaymentMethod.PIX,
+      status: PaymentStatus.PENDING,
     }
 
     await inMemoryPaymentsRepository.create(payment)
@@ -55,6 +64,13 @@ describe('Resolve Payment Use Case', () => {
     expect(messageBroker.publish).toHaveBeenCalledWith('payment.failure', {
       orderId: payment.orderId,
     })
+
+    const paymentInRepository = await inMemoryPaymentsRepository.findById(
+      payment.id,
+    )
+
+    expect(paymentInRepository).toBeDefined()
+    expect(paymentInRepository.status).toBe(PaymentStatus.FAILURE)
   })
 
   it('should not be able to resolve a payment that does not exist', async () => {

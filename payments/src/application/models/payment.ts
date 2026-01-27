@@ -4,6 +4,7 @@ export interface Payment {
   cost: number
   idempotencyKey: string
   method: PaymentMethod
+  status: PaymentStatus
 }
 
 export enum PaymentMethod {
@@ -11,4 +12,10 @@ export enum PaymentMethod {
   PAYPAL = 'paypal',
   PIX = 'pix',
   BILLET = 'billet',
+}
+
+export enum PaymentStatus {
+  PENDING = 'pending',
+  SUCCESS = 'success',
+  FAILURE = 'failure',
 }

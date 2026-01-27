@@ -1,6 +1,6 @@
 import { InMemoryPaymentsRepository } from 'test/in-memory-payments-repository'
 import { MessageBroker } from '../interfaces/message-broker'
-import { Payment, PaymentMethod } from '../models/payment'
+import { Payment, PaymentMethod, PaymentStatus } from '../models/payment'
 import { StartProcessingPaymentUseCase } from './start-processing-payment'
 
 let messageBroker: MessageBroker
@@ -31,6 +31,7 @@ describe('Start Processing Payment Use Case', () => {
     expect(payment.cost).toBe(paymentData.cost)
     expect(payment.idempotencyKey).toBe(paymentData.idempotencyKey)
     expect(payment.method).toBe(paymentData.method)
+    expect(payment.status).toBe('pending')
   })
 
   it('should return existing payment if idempotency key already used', async () => {
@@ -40,6 +41,7 @@ describe('Start Processing Payment Use Case', () => {
       cost: 100,
       idempotencyKey: 'idem-key-123',
       method: PaymentMethod.CREDIT_CARD,
+      status: PaymentStatus.PENDING,
     }
 
     await inMemoryPaymentsRepository.create(existingPayment)

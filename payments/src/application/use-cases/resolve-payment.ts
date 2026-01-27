@@ -1,5 +1,6 @@
 import { MessageBroker } from '../interfaces/message-broker'
 import { PaymentsRepository } from '../interfaces/payments-repository'
+import { PaymentStatus } from '../models/payment'
 import { Either, left, right } from '../utils/either'
 import { PaymentNotFoundError } from './errors/payment-not-found'
 
@@ -31,12 +32,22 @@ export class ResolvePaymentUseCase {
         orderId: payment.orderId,
       })
 
+      await this.paymentsRepository.updateStatus(
+        payment.id,
+        PaymentStatus.SUCCESS,
+      )
+
       return right(void 0)
     }
 
     await this.messageBroker.publish('payment.failure', {
       orderId: payment.orderId,
     })
+
+    await this.paymentsRepository.updateStatus(
+      payment.id,
+      PaymentStatus.FAILURE,
+    )
 
     return right(void 0)
   }

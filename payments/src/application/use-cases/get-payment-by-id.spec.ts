@@ -1,5 +1,5 @@
 import { InMemoryPaymentsRepository } from 'test/in-memory-payments-repository'
-import { PaymentMethod } from '../models/payment'
+import { PaymentMethod, PaymentStatus } from '../models/payment'
 import { PaymentNotFoundError } from './errors/payment-not-found'
 import { GetPaymentByIdUseCase } from './get-payment-by-id'
 
@@ -18,6 +18,7 @@ describe('Get Payment By Id Use Case', () => {
       cost: 100,
       idempotencyKey: 'idempotency-key-123',
       method: PaymentMethod.CREDIT_CARD,
+      status: PaymentStatus.PENDING,
     }
 
     await inMemoryPaymentsRepository.create(payment)
