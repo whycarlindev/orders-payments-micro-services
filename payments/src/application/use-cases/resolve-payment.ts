@@ -6,7 +6,7 @@ import { PaymentNotFoundError } from './errors/payment-not-found'
 
 type ResolvePaymentUseCaseInput = {
   paymentId: string
-  status: 'success' | 'failure'
+  status: 'success' | 'failed'
 }
 
 type ResolvePaymentUseCaseOutput = Either<PaymentNotFoundError, void>
@@ -42,7 +42,7 @@ export class ResolvePaymentUseCase {
     }
 
     await this.messageBroker.publish('payment.update', {
-      status: 'failure',
+      status: 'failed',
       orderId: payment.orderId,
     })
 
