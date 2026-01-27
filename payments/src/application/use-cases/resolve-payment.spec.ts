@@ -1,6 +1,6 @@
 import { InMemoryPaymentsRepository } from 'test/in-memory-payments-repository'
+import { PaymentMethod, PaymentStatus } from '../dtos/payment'
 import { MessageBroker } from '../interfaces/message-broker'
-import { PaymentMethod, PaymentStatus } from '../models/payment'
 import { PaymentNotFoundError } from './errors/payment-not-found'
 import { ResolvePaymentUseCase } from './resolve-payment'
 

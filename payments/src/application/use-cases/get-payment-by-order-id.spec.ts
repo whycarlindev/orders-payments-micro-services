@@ -1,5 +1,5 @@
 import { InMemoryPaymentsRepository } from 'test/in-memory-payments-repository'
-import { PaymentMethod, PaymentStatus } from '../models/payment'
+import { PaymentMethod, PaymentStatus } from '../dtos/payment'
 import { PaymentNotFoundError } from './errors/payment-not-found'
 import { GetPaymentByOrderIdUseCase } from './get-payment-by-order-id'
 

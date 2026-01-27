@@ -1,6 +1,6 @@
+import { PaymentStatus } from '../dtos/payment'
 import { MessageBroker } from '../interfaces/message-broker'
 import { PaymentsRepository } from '../interfaces/payments-repository'
-import { PaymentStatus } from '../models/payment'
 import { Either, left, right } from '../utils/either'
 import { PaymentNotFoundError } from './errors/payment-not-found'
 

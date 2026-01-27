@@ -1,5 +1,5 @@
+import { Payment } from '@/application/dtos/payment'
 import { PaymentsRepository } from '@/application/interfaces/payments-repository'
-import { Payment } from '@/application/models/payment'
 
 export class InMemoryPaymentsRepository implements PaymentsRepository {
   public items: Payment[] = []

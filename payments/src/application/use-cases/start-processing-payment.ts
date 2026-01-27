@@ -1,7 +1,7 @@
 import { uuidv7 } from 'uuidv7'
+import { Payment, PaymentMethod, PaymentStatus } from '../dtos/payment'
 import { MessageBroker } from '../interfaces/message-broker'
 import { PaymentsRepository } from '../interfaces/payments-repository'
-import { Payment, PaymentMethod, PaymentStatus } from '../models/payment'
 import { Either, right } from '../utils/either'
 
 type StartProcessingPaymentUseCaseInput = {

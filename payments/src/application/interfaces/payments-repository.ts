@@ -1,4 +1,4 @@
-import { Payment, PaymentStatus } from '../models/payment'
+import { Payment, PaymentStatus } from '../dtos/payment'
 
 export interface PaymentsRepository {
   create(data: Payment): Promise<void>

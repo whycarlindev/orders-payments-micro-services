@@ -1,6 +1,6 @@
 import { InMemoryPaymentsRepository } from 'test/in-memory-payments-repository'
+import { Payment, PaymentMethod, PaymentStatus } from '../dtos/payment'
 import { MessageBroker } from '../interfaces/message-broker'
-import { Payment, PaymentMethod, PaymentStatus } from '../models/payment'
 import { StartProcessingPaymentUseCase } from './start-processing-payment'
 
 let messageBroker: MessageBroker

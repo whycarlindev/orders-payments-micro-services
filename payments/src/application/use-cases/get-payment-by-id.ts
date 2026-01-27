@@ -1,5 +1,5 @@
+import { Payment } from '../dtos/payment'
 import { PaymentsRepository } from '../interfaces/payments-repository'
-import { Payment } from '../models/payment'
 import { Either, left, right } from '../utils/either'
 import { PaymentNotFoundError } from './errors/payment-not-found'
 
