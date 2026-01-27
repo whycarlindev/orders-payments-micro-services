@@ -13,7 +13,6 @@ type CreateOrderUseCaseOutput = Either<
   null,
   {
     order: Order
-    idempotencyKey: string
   }
 >
 
@@ -45,6 +44,6 @@ export class CreateOrderUseCase {
       idempotencyKey,
     })
 
-    return right({ order, idempotencyKey })
+    return right({ order })
   }
 }
