@@ -3,7 +3,11 @@ import type { Knex } from 'knex'
 
 declare module 'knex/types/tables' {
   interface Tables {
-    orders: Order
+    orders: {
+      id: string
+      status: OrderStatus
+      created_at: Date
+    }
   }
 }
 

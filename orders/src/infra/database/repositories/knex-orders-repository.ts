@@ -10,7 +10,7 @@ export class KnexOrdersRepository implements OrdersRepository {
     await db('orders').insert({
       id: data.id,
       status: data.status,
-      created_at: data.created_at,
+      created_at: data.createdAt,
     })
   }
 
@@ -24,7 +24,7 @@ export class KnexOrdersRepository implements OrdersRepository {
     return {
       id: order.id,
       status: order.status as OrderStatus,
-      created_at: new Date(order.created_at),
+      createdAt: new Date(order.created_at),
     }
   }
 
@@ -61,7 +61,7 @@ export class KnexOrdersRepository implements OrdersRepository {
       orders: orders.map((order) => ({
         id: order.id,
         status: order.status as OrderStatus,
-        created_at: new Date(order.created_at),
+        createdAt: new Date(order.created_at),
       })),
       total,
       limit,

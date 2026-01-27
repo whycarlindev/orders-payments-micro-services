@@ -1,7 +1,7 @@
 export interface Order {
   id: string
   status: OrderStatus
-  created_at: Date
+  createdAt: Date
 }
 
 export enum PaymentMethod {

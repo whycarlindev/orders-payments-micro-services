@@ -32,7 +32,7 @@ export class CreateOrderUseCase {
     const order: Order = {
       id: generatedId,
       status: OrderStatus.CREATED,
-      created_at: new Date(),
+      createdAt: new Date(),
     }
 
     await this.ordersRepository.create(order)
