@@ -6,6 +6,7 @@ const envSchema = z.object({
   PORT: z.coerce.number().default(8070),
 
   DATABASE_CONNECTION_STRING: z.string(),
+  RABBITMQ_URL: z.string().default('amqp://localhost'),
 })
 
 const _env = envSchema.safeParse(process.env)
