@@ -46,6 +46,7 @@ export class StartProcessingPaymentUseCase {
       idempotencyKey,
       method,
       status: PaymentStatus.PENDING,
+      createdAt: new Date(),
     }
 
     await this.paymentsRepository.create(payment)

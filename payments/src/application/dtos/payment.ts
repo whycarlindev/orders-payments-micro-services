@@ -5,6 +5,7 @@ export interface Payment {
   idempotencyKey: string
   method: PaymentMethod
   status: PaymentStatus
+  createdAt: Date
 }
 
 export enum PaymentMethod {
