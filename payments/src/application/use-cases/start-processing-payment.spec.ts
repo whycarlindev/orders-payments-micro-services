@@ -42,6 +42,7 @@ describe('Start Processing Payment Use Case', () => {
       idempotencyKey: 'idem-key-123',
       method: PaymentMethod.CREDIT_CARD,
       status: PaymentStatus.PENDING,
+      createdAt: new Date(),
     }
 
     await inMemoryPaymentsRepository.create(existingPayment)
