@@ -28,7 +28,8 @@ export class ResolvePaymentUseCase {
     }
 
     if (status === 'success') {
-      await this.messageBroker.publish('payment.success', {
+      await this.messageBroker.publish('payment.update', {
+        status: 'success',
         orderId: payment.orderId,
       })
 
@@ -40,7 +41,8 @@ export class ResolvePaymentUseCase {
       return right(void 0)
     }
 
-    await this.messageBroker.publish('payment.failure', {
+    await this.messageBroker.publish('payment.update', {
+      status: 'failure',
       orderId: payment.orderId,
     })
 

@@ -53,7 +53,8 @@ export class StartProcessingPaymentUseCase {
     // Payment processing logic would go here (e.g., interacting with a payment gateway)
     // For simplicity, we assume the payment will be processing asynchronously
 
-    await this.messageBroker.publish('payment.processing', {
+    await this.messageBroker.publish('payment.update', {
+      status: 'processing',
       orderId: payment.orderId,
     })
 

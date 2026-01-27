@@ -31,7 +31,8 @@ describe('Resolve Payment Use Case', () => {
     })
 
     expect(result.isRight()).toBe(true)
-    expect(messageBroker.publish).toHaveBeenCalledWith('payment.success', {
+    expect(messageBroker.publish).toHaveBeenCalledWith('payment.update', {
+      status: 'success',
       orderId: payment.orderId,
     })
 
@@ -61,7 +62,8 @@ describe('Resolve Payment Use Case', () => {
     })
 
     expect(result.isRight()).toBe(true)
-    expect(messageBroker.publish).toHaveBeenCalledWith('payment.failure', {
+    expect(messageBroker.publish).toHaveBeenCalledWith('payment.update', {
+      status: 'failure',
       orderId: payment.orderId,
     })
 
