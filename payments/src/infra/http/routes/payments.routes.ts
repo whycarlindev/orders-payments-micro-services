@@ -16,7 +16,7 @@ export async function paymentsRoutes(app: FastifyInstance) {
     getPaymentByOrderIdController.handle(request, reply),
   )
 
-  app.patch('/payments/:id/resolve', (request, reply) =>
+  app.post('/payments/:id/resolve', (request, reply) =>
     resolvePaymentController.handle(request, reply),
   )
 }
