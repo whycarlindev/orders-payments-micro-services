@@ -19,7 +19,9 @@ ENV NODE_ENV=prod
 COPY --from=build /app/dist ./dist
 COPY --from=deps /app/node_modules ./node_modules
 COPY package.json ./
+COPY knexfile.js ./
+COPY --from=build /app/src/infra/database/migrations ./src/infra/database/migrations
 
-EXPOSE 3000
+EXPOSE 3002
 
-CMD ["node", "dist/server.js"]
+CMD ["sh", "-c", "pnpm migrate && node dist/server.mjs"]

@@ -1,0 +1,124 @@
+version: '3.8'
+
+services:
+  postgres-orders:
+    image: bitnami/postgresql:latest
+    container_name: checkout-postgres-orders
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRESQL_USERNAME=docker
+      - POSTGRESQL_PASSWORD=docker
+      - POSTGRESQL_DATABASE=orders
+    volumes:
+      - postgres_orders_data:/bitnami/postgresql
+    networks:
+      - checkout-network
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U docker']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres-payments:
+    image: bitnami/postgresql:latest
+    container_name: checkout-postgres-payments
+    ports:
+      - '5433:5432'
+    environment:
+      - POSTGRESQL_USERNAME=docker
+      - POSTGRESQL_PASSWORD=docker
+      - POSTGRESQL_DATABASE=payments
+    volumes:
+      - postgres_payments_data:/bitnami/postgresql
+    networks:
+      - checkout-network
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U docker']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  rabbitmq:
+    image: rabbitmq:3.12-management-alpine
+    container_name: checkout-rabbitmq
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - checkout-network
+    healthcheck:
+      test: ['CMD', 'rabbitmq-diagnostics', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: checkout-api-gateway
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=local
+      - PORT=3000
+      - ORDERS_SERVICE_URL=http://orders:3001
+      - PAYMENTS_SERVICE_URL=http://payments:3002
+    networks:
+      - checkout-network
+    depends_on:
+      - orders
+      - payments
+
+  orders:
+    build:
+      context: ./orders
+      dockerfile: Dockerfile
+    container_name: checkout-orders
+    environment:
+      - NODE_ENV=local
+      - PORT=3001
+      - DATABASE_URL=postgresql://docker:docker@postgres-orders:5432/orders
+      - DATABASE_CONNECTION_STRING=postgresql://docker:docker@postgres-orders:5432/orders
+      - RABBITMQ_URL=amqp://admin:admin@rabbitmq:5672
+    networks:
+      - checkout-network
+    depends_on:
+      postgres-orders:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
+  payments:
+    build:
+      context: ./payments
+      dockerfile: Dockerfile
+    container_name: checkout-payments
+    environment:
+      - NODE_ENV=local
+      - PORT=3002
+      - DATABASE_URL=postgresql://docker:docker@postgres-payments:5432/payments
+      - DATABASE_CONNECTION_STRING=postgresql://docker:docker@postgres-payments:5432/payments
+      - RABBITMQ_URL=amqp://admin:admin@rabbitmq:5672
+    networks:
+      - checkout-network
+    depends_on:
+      postgres-payments:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
+networks:
+  checkout-network:
+    driver: bridge
+
+volumes:
+  postgres_orders_data:
+  postgres_payments_data:
+  rabbitmq_data:
