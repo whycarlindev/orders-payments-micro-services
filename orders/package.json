@@ -1,14 +1,16 @@
 {
   "name": "orders",
   "version": "1.0.0",
-  "description": "",
+  "description": "Order management service for checkout system",
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "start": "node dist/server.js",
     "build": "tsup src/server.ts --format esm",
-    "test": "vitest",
-    "test:e2e": "vitest --config vitest.config.e2e.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "vitest run --config vitest.config.e2e.ts",
+    "test:e2e:watch": "vitest --config vitest.config.e2e.ts",
     "migrate": "knex migrate:latest --knexfile knexfile.js",
     "migrate:rollback": "knex migrate:rollback --knexfile knexfile.ts",
     "migrate:make": "knex migrate:make --knexfile knexfile.ts -x ts"
@@ -20,7 +22,6 @@
   "devDependencies": {
     "@biomejs/biome": "^2.3.13",
     "@testcontainers/postgresql": "^11.11.0",
-    "@testcontainers/rabbitmq": "^11.11.0",
     "@types/amqplib": "^0.10.8",
     "@types/pg": "^8.16.0",
     "biome": "^0.3.3",
