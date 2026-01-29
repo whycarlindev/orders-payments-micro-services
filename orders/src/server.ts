@@ -1,7 +1,9 @@
 import { env } from './infra/env'
-import { app } from './infra/http/app'
+import { buildApp } from './infra/http/app'
 import { messageBroker } from './infra/message-broker'
 import { registerSubscribers } from './infra/message-broker/subscribers'
+
+const app = buildApp()
 
 async function bootstrap() {
   try {

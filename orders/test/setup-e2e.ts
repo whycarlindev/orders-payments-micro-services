@@ -3,45 +3,51 @@ import {
   PostgreSqlContainer,
   StartedPostgreSqlContainer,
 } from '@testcontainers/postgresql'
-import {
-  RabbitMQContainer,
-  StartedRabbitMQContainer,
-} from '@testcontainers/rabbitmq'
+import { FastifyInstance } from 'fastify'
 import knex, { Knex } from 'knex'
+import { MockMessageBroker } from './mock-message-broker'
 
 let postgressContainer: StartedPostgreSqlContainer
-let rabbitMqContainer: StartedRabbitMQContainer
-let db: Knex
+export let db: Knex
+
+export let app: FastifyInstance
+export const mockMessageBroker = new MockMessageBroker()
 
 beforeAll(async () => {
   postgressContainer = await new PostgreSqlContainer('postgres:15-alpine')
     .withExposedPorts(5432)
     .start()
 
-  rabbitMqContainer = await new RabbitMQContainer(
-    'rabbitmq:3.12.11-management-alpine',
-  )
-    .withExposedPorts(5672)
-    .start()
-
-  const connectionString = postgressContainer.getConnectionUri()
+  const postgressConnectionString = postgressContainer.getConnectionUri()
 
   process.env.NODE_ENV = 'test'
-  process.env.DATABASE_CONNECTION_STRING = connectionString
-  process.env.RABBITMQ_URL = `amqp://${rabbitMqContainer.getHost()}:${rabbitMqContainer.getMappedPort(
-    5672,
-  )}`
+  process.env.DATABASE_CONNECTION_STRING = postgressConnectionString
+
+  vi.doMock('@/infra/message-broker', () => ({
+    messageBroker: mockMessageBroker,
+  }))
+
+  // Import after setting environment variables and mocking
+  const { buildApp } = await import('@/infra/http/app')
 
   db = knex({
     client: 'pg',
-    connection: connectionString,
+    connection: postgressConnectionString,
   })
 
   execSync('knex migrate:latest --knexfile=./knexfile.ts')
+
+  app = buildApp()
+})
+
+afterEach(() => {
+  mockMessageBroker.clearMessages()
 })
 
 afterAll(async () => {
+  await db.raw('DROP TABLE IF EXISTS orders CASCADE;')
+
+  await app.close()
   await db.destroy()
   await postgressContainer.stop()
-  await rabbitMqContainer.stop()
 })
