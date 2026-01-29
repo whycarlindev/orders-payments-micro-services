@@ -2,7 +2,7 @@ import 'dotenv/config'
 import { z } from 'zod'
 
 const envSchema = z.object({
-  NODE_ENV: z.enum(['local', 'hml', 'prod']).default('local'),
+  NODE_ENV: z.enum(['local', 'test', 'hml', 'prod']).default('local'),
   PORT: z.coerce.number().default(8070),
 
   DATABASE_CONNECTION_STRING: z.string(),
