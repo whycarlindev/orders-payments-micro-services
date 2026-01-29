@@ -3,6 +3,7 @@ import type {
   MessageBroker,
   MessageHandler,
 } from '../../application/interfaces/message-broker'
+import { logger } from '../logger'
 
 export class RabbitMQBroker implements MessageBroker {
   private connection: amqp.ChannelModel | null = null
@@ -19,16 +20,16 @@ export class RabbitMQBroker implements MessageBroker {
       this.channel = await this.connection.createChannel()
 
       this.connection.on('error', (err) => {
-        console.error('RabbitMQ connection error:', err)
+        logger.error(`RabbitMQ connection error: ${err.message}`)
       })
 
       this.connection.on('close', () => {
-        console.log('RabbitMQ connection closed')
+        logger.info('RabbitMQ connection closed')
       })
 
-      console.log('Connected to RabbitMQ')
+      logger.info('Connected to RabbitMQ')
     } catch (error) {
-      console.error('Failed to connect to RabbitMQ:', error)
+      logger.error(`Failed to connect to RabbitMQ: ${(error as Error).message}`)
       throw error
     }
   }
@@ -42,7 +43,7 @@ export class RabbitMQBroker implements MessageBroker {
       persistent: true,
     })
 
-    console.log(`Published message to queue "${event}"`)
+    logger.info(`Published message to queue "${event}"`)
   }
 
   async subscribe(event: string, handler: MessageHandler) {
@@ -56,11 +57,12 @@ export class RabbitMQBroker implements MessageBroker {
             const data = JSON.parse(msg.content.toString())
             await handler(data)
             this.channel.ack(msg)
-            console.log(`Processed message from queue "${event}"`)
+            logger.info(`Processed message from queue "${event}"`)
           } catch (error) {
-            console.error(
-              `Error processing message from queue "${event}":`,
-              error,
+            logger.error(
+              `Failed to process message from queue "${event}": ${
+                (error as Error).message
+              }`,
             )
 
             this.channel.nack(msg, false, true)
@@ -72,16 +74,18 @@ export class RabbitMQBroker implements MessageBroker {
       },
     )
 
-    console.log(`Subscribed to queue "${event}"`)
+    logger.info(`Subscribed to queue '${event}'`)
   }
 
   async close() {
     try {
       await this.channel.close()
       await this.connection.close()
-      console.log('RabbitMQ connection closed successfully')
+      logger.info('RabbitMQ connection closed successfully')
     } catch (error) {
-      console.error('Error closing RabbitMQ connection:', error)
+      logger.error(
+        `Failed to close RabbitMQ connection: ${(error as Error).message}`,
+      )
       throw error
     }
   }

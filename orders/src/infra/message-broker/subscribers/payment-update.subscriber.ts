@@ -3,11 +3,12 @@ import type { MessageHandler } from '@/application/interfaces/message-broker'
 import { InvalidStatusTransitionError } from '@/application/use-cases/errors/invalid-status-transition'
 import { UpdateOrderStatusUseCase } from '@/application/use-cases/update-order-status'
 import { KnexOrdersRepository } from '@/infra/database/repositories/knex-orders-repository'
+import { logger } from '@/infra/logger'
 
 export const paymentUpdateSubscriber: MessageHandler = async (data) => {
   const { orderId, status } = data as { orderId: string; status: string }
 
-  console.log(`Processing payment.update: orderId=${orderId}, status=${status}`)
+  logger.info(`Processing payment.update: orderId=${orderId}, status=${status}`)
 
   const ordersRepository = new KnexOrdersRepository()
   const updateOrderStatusUseCase = new UpdateOrderStatusUseCase(
@@ -31,15 +32,15 @@ export const paymentUpdateSubscriber: MessageHandler = async (data) => {
     const { value } = result
 
     if (value instanceof InvalidStatusTransitionError) {
-      console.warn(
+      logger.warn(
         `Invalid status transition for order ${orderId}: ${value.message}`,
       )
       return
     }
 
-    console.error(`Failed to update order status: ${result.value.message}`)
+    logger.error(`Failed to update order status: ${result.value.message}`)
     throw new Error(result.value.message)
   }
 
-  console.log(`Order ${orderId} status updated to ${orderStatus}`)
+  logger.info(`Order ${orderId} status updated to ${orderStatus}`)
 }
